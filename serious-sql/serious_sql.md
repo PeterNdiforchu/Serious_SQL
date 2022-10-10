@@ -589,7 +589,36 @@ FROM user_measure_count;
 SELECT
   COUNT(id)
 FROM user_measure_count
-WHERE measure_count >= 3
+WHERE measure_count >= 3;
 
+-- 5. How many users have 1,000 or more measurements?
+SELECT
+  COUNT(id)
+FROM user_measure_count
+WHERE measure_count >= 1000;
 
+-- 6. Have logged blood glucose measurements?
+SELECT
+  COUNT(DISTINCT id)
+FROM health.user_logs
+WHERE measure = 'blood_glucose';
+
+-- 7. Have at least 2 types of measurements?
+SELECT
+  COUNT(*)
+FROM user_measure_count
+WHERE unique_measures >= 2;
+
+-- 8. Have all 3 measures - blood glucose, weight and blood pressure?
+SELECT
+  COUNT(*)
+FROM user_measure_count
+WHERE unique_measures = 3;
+
+-- 9.  What is the median systolic/diastolic blood pressure values?
+SELECT
+  PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY systolic) AS median_systolic,
+  PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY diastolic) AS median_diastolic
+FROM health.user_logs
+WHERE measure = 'blood_pressure';
 ```
